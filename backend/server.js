@@ -11,6 +11,7 @@ const courseRoutes = require('./routes/courses');
 const moduleRoutes = require('./routes/modules');
 const uploadRoutes = require('./routes/upload');
 const studentRoutes = require('./routes/students');
+const instructorRoutes = require('./routes/instructors');   // with the other requires at top
 const enrollmentRoutes = require('./routes/enrollments');
 
 const app = express();
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/api/students', studentRoutes);
+app.use('/api/instructors', instructorRoutes);              // with the other app.use lines
 app.use('/api', moduleRoutes);      // /api/courses/:id/modules, /api/modules/:id
 app.use('/api', enrollmentRoutes);  // /api/enrollments, /api/courses/:id/enroll, /api/courses/:id/students, /api/students/:id/courses
 app.use('/api/upload', uploadRoutes);

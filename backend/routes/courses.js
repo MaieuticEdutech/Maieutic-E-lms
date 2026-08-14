@@ -1,11 +1,6 @@
 // backend/routes/courses.js
 // Full CRUD API for courses, backed by PostgreSQL.
-//
-// Setup: in server.js add
-//     const courseRoutes = require('./routes/courses');
-//     app.use('/api/courses', courseRoutes);
-//
-// The `courses` table is created automatically on first use — no manual SQL needed.
+// The list route reports the live enrolled-student count from the enrollments table.
 
 const express = require('express');
 const pool = require('../db');
@@ -62,7 +57,7 @@ function normalize(body) {
   };
 }
 
-// GET /api/courses  — list all courses, with the real enrolled-student count
+// GET /api/courses  — list all courses, with the LIVE enrolled-student count
 router.get('/', async (req, res) => {
   try {
     await ready;
@@ -168,6 +163,8 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     await ready;
+    // Remove this course's enrollments too (ignore if that table isn't there).
+    await pool.query('DELETE FROM enrollments WHERE course_id = $1', [req.params.id]).catch(() => {});
     const { rows } = await pool.query('DELETE FROM courses WHERE id = $1 RETURNING id', [req.params.id]);
     if (rows.length === 0) {
       return res.status(404).json({ message: 'Course not found' });
