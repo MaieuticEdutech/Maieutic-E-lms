@@ -119,8 +119,8 @@ export default function AdminCourses() {
                 const grad = GRADIENTS[idx % GRADIENTS.length];
                 return (
                   <div key={c.id} className="bg-white rounded-xl shadow-sm border overflow-hidden flex flex-col hover:shadow-md transition-shadow">
-                    {/* Banner */}
-                    <div className={`relative h-40 bg-gradient-to-br ${grad}`}>
+                    {/* Banner — opens the course, where its modules and units are listed */}
+                    <Link href={`/admin/courses/${c.id}`} className={`relative block h-40 bg-gradient-to-br ${grad}`}>
                       {c.image_url ? (
                         <img src={`${BACKEND}${c.image_url}`} alt={c.title} className="absolute inset-0 w-full h-full object-cover" />
                       ) : (
@@ -131,11 +131,13 @@ export default function AdminCourses() {
                       <span className={`absolute top-3 right-3 text-xs font-medium px-2.5 py-1 rounded-full ${c.status === "Published" ? "bg-emerald-50 text-emerald-700" : "bg-amber-50 text-amber-700"}`}>
                         {c.status || "Draft"}
                       </span>
-                    </div>
+                    </Link>
 
                     {/* Body */}
                     <div className="p-4 flex-1 flex flex-col">
-                      <h3 className="font-semibold text-gray-900 leading-snug line-clamp-2">{c.title}</h3>
+                      <Link href={`/admin/courses/${c.id}`} className="font-semibold text-gray-900 leading-snug line-clamp-2 hover:text-indigo-600">
+                        {c.title}
+                      </Link>
                       <p className="text-sm text-gray-500 mt-1">{c.instructor || "—"}</p>
                       {c.category && <p className="text-xs text-gray-400 mt-0.5">{c.category}</p>}
 
